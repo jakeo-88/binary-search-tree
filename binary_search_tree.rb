@@ -126,6 +126,35 @@ class Tree
         
       find(value, current_node)
     end
+
+    def level_order(level, queue = Array.new, list = Array.new, current_node = self.root, counter = 0)
+        
+      return nil if level == 0
+      return "Input level value higher than actual levels" if level > counter
+      
+      total = 0 
+      i = 0 
+      while i < level do 
+          sum = 2 ** i
+          total += sum
+          i += 1
+      end
+      total
+      
+      return list if total == counter
+      
+      list << current_node.data
+      
+      queue << current_node.left_children unless current_node.left_children == nil
+      
+      queue << current_node.right_children unless current_node.right_children == nil
+      
+      return list if queue.empty?
+      
+      level_order(level, queue, list, queue.shift, counter + 1)
+    end
+      
+  end
 end
 
 a = Tree.new([1,2,3,4,5,6,7])
