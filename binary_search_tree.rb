@@ -182,6 +182,21 @@ class Tree
   
   end
 
+  def depth(value, current_node = self.root, counter = 0)
+      
+    return counter if value == current_node.data
+     
+    if value < current_node.data
+      current_node = current_node.left_children
+        
+    else 
+      current_node = current_node.right_children
+          
+    end
+      
+    depth(value, current_node, counter + 1)
+  end
+
 end
 
 a = Tree.new([1,2,3,4,5,6,7])
