@@ -157,9 +157,28 @@ class Tree
     return list if node == nil
     
     list << node.data
-    
     preorder(node.left_children, list)
     preorder(node.right_children, list)
+  
+  end
+
+  def inorder(node = self.root, list = Array.new)
+      
+    return list if node == nil
+    
+    inorder(node.left_children, list)
+    list << node.data
+    inorder(node.right_children, list)
+  
+  end
+
+  def postorder(node = self.root, list = Array.new)
+      
+    return list if node == nil
+    
+    postorder(node.left_children, list)
+    postorder(node.right_children, list)
+    list << node.data
   
   end
 
