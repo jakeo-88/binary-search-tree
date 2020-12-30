@@ -60,10 +60,11 @@ class Tree
     
   def delete(value, current_node = self.root, parent_node = Node.new, node_to_replace = 0)
         
-    if ( (value == current_node.data) && (current_node.left_children == nil) && (current_node.right_children == nil) )
+    if ( (value == current_node.left_children || value == current_node.right_children) && 
+         ( (current_node.left_children.left_children == nil && current_node.left_children.right_children == nil) || 
+         (current_node.right_children.left_children == nil && current_node.right_children.right_children == nil) ) )
             
-      current_node.data = nil
-      return
+      return current_node = nil
         
     elsif ( (value == current_node.data) && (current_node.left_children != nil) && (current_node.right_children != nil) ) 
             
