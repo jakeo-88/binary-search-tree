@@ -183,6 +183,16 @@ class Tree
   
   end
 
+  def height(value, node = self.find(value), counter = 0, record = [0])
+    
+    record[0] = counter if record[0] < counter
+
+    return record[0] - 1 if node == nil 
+
+    height(value, node.left_children, counter + 1, record)
+    height(value, node.right_children, counter + 1, record)
+  end
+
   def depth(value, current_node = self.root, counter = 0)
       
     return counter if value == current_node.data
@@ -202,8 +212,6 @@ end
 
 a = Tree.new([1,2,3,4,5,6,7])
 a.build_tree
-a
-a.delete(2)
-p a
+
 
 
