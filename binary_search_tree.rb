@@ -14,18 +14,15 @@ class Tree
     
   def initialize(ary)
     @ary = ary
+    @ary = @ary.sort
+    @ary = @ary.uniq
+
     @root
-        
         
   end
     
   def build_tree(ary = @ary, start_index = 0, end_index = ary.length - 1)
-      # sort array
-      ary = ary.sort
-        
-      # remove duplicates         
-      ary = ary.uniq
-       
+    
       # build the binary search tree
       return nil if start_index > end_index
         
@@ -127,22 +124,8 @@ class Tree
       
     find(value, current_node)
   end
- def level_order(level, queue = Array.new, list = Array.new, current_node = self.root, counter = 0)
+ def level_order(queue = Array.new, list = Array.new, current_node = self.root)
       
-    return nil if level == 0
-    return "Input level value higher than actual levels" if level > counter
-    
-    total = 0 
-    i = 0 
-    while i < level do 
-        sum = 2 ** i
-        total += sum
-        i += 1
-    end
-    total
-    
-    return list if total == counter
-    
     list << current_node.data
     
     queue << current_node.left_children unless current_node.left_children == nil
@@ -150,7 +133,7 @@ class Tree
     
     return list if queue.empty?
     
-    level_order(level, queue, list, queue.shift, counter + 1)
+    level_order(queue, list, queue.shift)
   end
       
   def preorder(node = self.root, list = Array.new)
@@ -208,10 +191,96 @@ class Tree
     depth(value, current_node, counter + 1)
   end
 
+  def leafs(leaf_nodes = Array.new, node = self.root, queue = Array.new)
+    
+    leaf_nodes << node.data if node.left_children == nil && node.right_children == nil
+    
+    queue << node.left_children unless node.left_children == nil
+    queue << node.right_children unless node.right_children == nil
+
+    return leaf_nodes if queue.empty?
+
+    leafs(leaf_nodes, queue.shift, queue)
+    
+  end
+
+  def balanced?(list = self.leafs)
+  
+    shortest = self.depth(list[0], self.root)
+    tallest = 1
+    
+    i = 0 
+    while i < list.length do 
+      list[i]
+      height = self.depth(list[i], self.root)
+      
+      if shortest > height then
+        shortest = height  
+      end
+      
+      if tallest < height then 
+        tallest = height
+      end
+      
+      shortest
+      tallest
+      i += 1 
+    end
+    tallest
+    shortest
+    
+    if tallest - shortest == 1 || tallest - shortest == 0
+      return true
+    else 
+      return false
+    end
+    
+  end
+  
+  def rebalance(list = self.preorder)
+    
+    list = list.sort
+    self.build_tree(list)
+     
+  end
+  
 end
 
-a = Tree.new([1,2,3,4,5,6,7])
+# 1. Create a binary search tree from an array of randomnumbers (`Array.new(15) { rand(1..100) }`)
+a = Tree.new(Array.new(15) { rand(1..100) })
 a.build_tree
+# 2. Confirm that the tree is balanced by calling `#balanced?`
+# a.balanced?
+a.balanced?
+
+# 3. Print out all elements in level, pre, post, and in order
+a.level_order
+a.preorder
+a.inorder
+a.postorder
+
+# 4. try to unbalance the tree by adding several numbers > 100
+a.insert(101)
+a.insert(150)
+a.insert(151)
+a.insert(252)
+a.insert(300)
+
+# 5. Confirm that the tree is unbalanced by calling `#balanced?`
+a.balanced?
+
+# 6. Balance the tree by calling `#rebalance`
+a.rebalance
+
+# 7. Confirm that the tree is balanced by calling `#balanced?`
+a.balanced?
+
+# 8. Print out all elements in level, pre, post, and in order
+a.level_order
+a.preorder
+a.inorder
+a.postorder  
+
 
 
 
